@@ -2,6 +2,7 @@ var putin = {
 
     x: 0,
     y: 0,
+    selected: 5,
     speed: 1000,
 
     colors: {
@@ -43,12 +44,12 @@ var putin = {
         5: 
         [
             "5",
-            "5555"
+            "555"
         ],
         6: 
         [
-            "   6",
-            "6666"
+            "  6",
+            "666"
         ]
     },
 
@@ -90,8 +91,6 @@ var putin = {
             x=0;
             y++;
         }
-
-        console.log(this.grid);
         
     },
     draw: function() {
@@ -106,7 +105,24 @@ var putin = {
             }.bind(this))
             x=0;
             y++;
-        }.bind(this))        
+        }.bind(this))       
+        
+        this.drawPlayer()        
+
+    },
+
+    drawPlayer: function() {
+
+        relX = 0
+        relY = 0
+        this.blocks[this.selected].forEach(function(row) {
+            row.split("").forEach(function(col){
+                if(col != " ") this.drawCell(this.x + relX, this.y+relY, this.colors[this.selected])
+                relX++
+            }.bind(this))
+            relX = 0
+            relY++
+        }.bind(this))
     },
 
     drawCell: function(x, y, color = "red") {
