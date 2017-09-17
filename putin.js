@@ -2,7 +2,7 @@ var putin = {
 
     x: 0,
     y: 0,
-    selected: 1,
+    selected: 0,
     speed: 1000,
 
     colors: {
@@ -78,9 +78,9 @@ var putin = {
 
     loop: function() {
         
-        this.draw()
-        this.recordPlayer()
 
+        this.movePlayer()
+        this.draw()
 
     },
 
@@ -121,20 +121,63 @@ var putin = {
 
     },
 
-    recordPlayer: function() {
-        
-        console.log(this.getBlock().length)
-
-        this.y++
-
-        if((this.getBlock().length - 1) + this.y == this.height) {
+    movePlayer: function() {
+ 
+        if(this.getBlock().length + this.y == this.height) {
+            this.recordBlock()
             this.y = 0
-
+            return
         } 
+       this.y++
+    },
+
+    recordBlock: function() {
+        rowCount = 0
+        invalid = false
+        newRow = []
+        this.getBlock().forEach(function(row) {
+            
+            first = this.grid[this.y + rowCount].substr(0, this.x)            
+            middle = this.grid[this.y + rowCount].substr(this.x, this.x + this.getBlock()[rowCount].length)
+            last = this.grid[this.y + rowCount].substr(this.x + this.getBlock()[rowCount].length, this.width)
+
+            console.log("|" + first + middle + last + "|")
+
+            charCount = 0
+
+            newRow[rowCount] = first 
+
+// move it down or save...
 
 
+            middle.split("").forEach(function(c) {
+                
+                if(row.charAt(charCount) != " ") {
+                    if(c != " ") {
+                        invalid = true
+                        console.log('will not fit!')
+                    }
+
+                    newRow[rowCount]+=row.charAt(charCount)
+                    charCount++    
+                }
+            })
+            
+            rowCount++
+
+        }.bind(this))
 
 
+        if(invalid == false) 
+        {
+            count = 0
+            newRow.forEach(function(e) {
+                this.grid[this.y + count] = e
+                count++
+            }.bind(this))
+            console.log('savable!')         
+
+        }
     },
 
     getBlock: function() {
