@@ -2,7 +2,7 @@ var putin = {
 
     x: 0,
     y: 0,
-    selected: 5,
+    selected: 1,
     speed: 1000,
 
     colors: {
@@ -55,8 +55,8 @@ var putin = {
 
     grid: [],
 
-    width: 10,
-    height: 20,
+    width:5,
+    height: 5,
 
     canvas: false,
     blockSize: 10,
@@ -69,7 +69,17 @@ var putin = {
         this.canvas.width = this.width * this.blockSize;
         this.canvas.height = this.height * this.blockSize;
 
+        setInterval(function() { this.loop() }.bind(this), this.speed)
+
+   //     this.draw()
+
+
+    },
+
+    loop: function() {
+        
         this.draw()
+        this.recordPlayer()
 
 
     },
@@ -109,6 +119,26 @@ var putin = {
         
         this.drawPlayer()        
 
+    },
+
+    recordPlayer: function() {
+        
+        console.log(this.getBlock().length)
+
+        this.y++
+
+        if((this.getBlock().length - 1) + this.y == this.height) {
+            this.y = 0
+
+        } 
+
+
+
+
+    },
+
+    getBlock: function() {
+        return this.blocks[this.selected]
     },
 
     drawPlayer: function() {
